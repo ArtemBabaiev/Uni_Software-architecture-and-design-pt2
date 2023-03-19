@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Server.Configuration
 {
-    internal class MapperProfile: Profile
+    internal class MapperProfile : Profile
     {
         public MapperProfile()
         {
@@ -18,7 +18,10 @@ namespace Server.Configuration
 
         public void CreateAuthorMap()
         {
-            CreateMap<Author, AuthorResponse>();
+            CreateMap<Author, AuthorResponse>()
+                .ForMember(
+                    response => response.LastUpdatedAt,
+                    conf => conf.MapFrom(model => model.UpdatedAt));
             CreateMap<AuthorCreateRequest, Author>();
             CreateMap<AuthorUpdateRequest, Author>();
         }

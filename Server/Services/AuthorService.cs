@@ -19,7 +19,7 @@ namespace Server.Services
 
         public AuthorService()
         {
-            this.mapConfig = ObjectPool.MapperConfiguration;
+            this.mapConfig = SingletonPool.MapperConfiguration;
         }
 
         public async Task<AuthorResponse> CreateAuthor(AuthorCreateRequest request)
@@ -82,7 +82,9 @@ namespace Server.Services
             {
 
                 var toUpdate = mapper.Map<Author>(request);
+                var inDb = await uow.AuthorRepository.GetAsync(id);
                 toUpdate.Id = id;
+                toUpdate.CreatedAt = inDb.CreatedAt;
                 toUpdate.UpdatedAt = DateTime.Now;
                 await uow.AuthorRepository.ReplaceAsync(toUpdate);
                 var updated = await uow.AuthorRepository.GetAsync(id);

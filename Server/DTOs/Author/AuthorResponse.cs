@@ -10,5 +10,7 @@ namespace Server.DTOs.Author
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
+        public DateTime LastUpdatedAt { get; set; }
+
     }
 }

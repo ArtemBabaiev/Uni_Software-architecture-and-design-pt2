@@ -11,7 +11,7 @@ namespace Server.ObjectManagers
     {
         public static SqlConnection GetSqlConnection()
         {
-            return new SqlConnection(ObjectPool.ConnectionString);
+            return new SqlConnection(SingletonPool.ConnectionString);
         }
     }
 }
