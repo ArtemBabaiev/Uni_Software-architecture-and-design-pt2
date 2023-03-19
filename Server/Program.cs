@@ -8,6 +8,7 @@ using Server.Configuration;
 using Server.Services;
 using Server.Controllers.Interfaces;
 using Serilog;
+using System.Reflection;
 
 namespace Server
 {
@@ -28,9 +29,10 @@ namespace Server
             SingletonPool.MapperConfiguration = new MapperConfiguration(cfg =>
                 cfg.AddProfile<MapperProfile>()
             );
+            var mt = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Properties:j} {Message:lj}{NewLine}{Exception}";
             SingletonPool.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                //.WriteTo.File("log.txt")
+                .WriteTo.Console(outputTemplate: mt)
+                .WriteTo.File("log.txt", outputTemplate: mt)
                 .CreateLogger();
 
             SingletonPool.AuthorService = new AuthorService();

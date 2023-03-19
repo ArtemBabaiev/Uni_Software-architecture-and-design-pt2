@@ -1,4 +1,5 @@
-﻿using Server.Configuration;
+﻿using Serilog;
+using Server.Configuration;
 using Server.Controllers.Interfaces;
 using Server.DTOs.Author;
 using Server.ObjectManagers;
@@ -22,7 +23,7 @@ namespace Server.Controllers
         public AuthorController()
         {
             _authorService = SingletonPool.AuthorService;
-            logger = SingletonPool.Logger;
+            logger = SingletonPool.Logger.ForContext<AuthorController>();
         }
 
         public async void Route(HttpListenerContext ctx)

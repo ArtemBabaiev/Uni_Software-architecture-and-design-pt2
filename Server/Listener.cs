@@ -22,7 +22,7 @@ namespace Server
             this.listener = new HttpListener();
             listener.Prefixes.Add(prefix);
             authorController = new AuthorController();
-            logger = SingletonPool.Logger;
+            logger = SingletonPool.Logger.ForContext<Listener>();
         }
 
         public async void StartListening()
