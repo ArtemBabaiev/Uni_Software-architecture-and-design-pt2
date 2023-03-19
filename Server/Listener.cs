@@ -15,7 +15,7 @@ namespace Server
     {
         HttpListener listener;
         AuthorController authorController;
-        Serilog.Core.Logger logger;
+        Serilog.ILogger logger;
 
         public Listener(string prefix)
         {

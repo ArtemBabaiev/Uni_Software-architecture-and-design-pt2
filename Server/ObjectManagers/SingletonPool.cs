@@ -12,7 +12,7 @@ namespace Server.ObjectManagers
     {
         public static string ConnectionString { get; set; }
         public static MapperConfiguration MapperConfiguration { get; set; }
-        public static Serilog.Core.Logger Logger { get; set; }
+        public static Serilog.ILogger Logger { get; set; }
         public static IAuthorService AuthorService { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Server.Controllers
     internal class AuthorController : IController
     {
         IAuthorService _authorService;
-        Serilog.Core.Logger logger;
+        Serilog.ILogger logger;
 
         public AuthorController()
         {
