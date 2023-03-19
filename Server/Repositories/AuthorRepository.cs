@@ -12,7 +12,7 @@ namespace Server.Repositories
 {
     internal class AuthorRepository : GenericRepository<Author>, IAuthorReposiitory
     {
-        public AuthorRepository(SqlConnection sqlConnection, IDbTransaction dbTransaction, string tableName) : base(sqlConnection, dbTransaction, tableName)
+        public AuthorRepository(SqlConnection sqlConnection, IDbTransaction dbTransaction) : base(sqlConnection, dbTransaction, "Authors")
         {
         }
     }
