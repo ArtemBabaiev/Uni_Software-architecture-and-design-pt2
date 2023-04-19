@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
+using Server.DTOs;
 using Server.DTOs.Author;
 using Server.Models;
 using Server.ObjectManagers;
 using Server.Services.Interfaces;
-using Server.UoW;
-using Server.UoW.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Services
 {
@@ -39,14 +33,15 @@ namespace Server.Services
             }
         }
 
-        public async Task DeleteAuthor(long id)
+        public async Task<DeleteRespose> DeleteAuthor(long id)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
             using (var uow = UowManager.GetUnitOfWork(connection))
             {
-                await uow.AuthorRepository.DeleteAsync(id);
+                var isDeleted = await uow.AuthorRepository.DeleteAsync(id);
                 uow.Commit();
+                return new DeleteRespose() { IsDeleted = isDeleted };
             }
         }
 

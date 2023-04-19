@@ -1,13 +1,8 @@
 ﻿using Server.Repositories;
 using Server.Repositories.Interfaces;
 using Server.UoW.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.UoW
 {

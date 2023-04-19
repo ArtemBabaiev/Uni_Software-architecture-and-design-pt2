@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dapper;
+using Server.Repositories.Interfaces;
 using System.ComponentModel;
-using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using Server.Repositories.Interfaces;
-using Dapper;
 
 namespace Server.Repositories
 {
@@ -28,7 +24,6 @@ namespace Server.Repositories
         public async Task<long> AddAsync(T t)
         {
             var insertQuery = GenerateInsertQuery();
-            Console.WriteLine(insertQuery);
             var newId = await _sqlConnection.ExecuteScalarAsync<long>(
                 insertQuery,
                 param: t,
@@ -46,13 +41,14 @@ namespace Server.Repositories
             return inserted;
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
-            await _sqlConnection.ExecuteAsync(
+            var qResult = await _sqlConnection.ExecuteAsync(
                 $"DELETE FROM {_tableName} WHERE Id=@Id",
                 param: new { Id = id },
                 transaction: _dbTransaction
                 );
+            return Convert.ToBoolean(qResult);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
