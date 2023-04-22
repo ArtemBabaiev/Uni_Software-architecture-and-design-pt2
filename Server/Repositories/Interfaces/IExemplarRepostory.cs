@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Server.Repositories.Interfaces
 {
-    internal interface IExemplarRepostory : IGenericRepository<Exemplar>
+    internal interface IExemplarRepository : IGenericRepository<Exemplar>
     {
     }
 }
