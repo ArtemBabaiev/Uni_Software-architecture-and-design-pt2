@@ -4,17 +4,12 @@ using Server.Controllers;
 using Server.DTOs.Book;
 using Server.Routers.Interfaces;
 using Server.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Server.Routers
 {
-    internal class BookRouter: IRouter
+    internal class BookRouter : IRouter
     {
         private readonly string RouterPath = ApiPath.Book;
         public ILogger Logger { get; protected set; }

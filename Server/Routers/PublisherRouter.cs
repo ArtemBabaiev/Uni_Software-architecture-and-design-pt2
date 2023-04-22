@@ -4,13 +4,8 @@ using Server.Controllers;
 using Server.DTOs.Publisher;
 using Server.Routers.Interfaces;
 using Server.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Server.Routers
 {
@@ -46,7 +41,7 @@ namespace Server.Routers
         public async void RouteGet(HttpListenerContext ctx)
         {
             var reqData = HttpHelper.UnpackRequest(ctx.Request, RouterPath);
-            
+
             if (Regex.IsMatch(reqData.NoApiPath, ApiPath.IdRegex))
             {
                 var param = Convert.ToInt64(reqData.NoApiPath[1..]);

@@ -1,18 +1,13 @@
 ﻿using Serilog;
-using Server.DTOs.Book;
-using Server.Services.Interfaces;
-using Server.Services;
-using Server.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Server.Controllers.Interfaces;
+using Server.DTOs.Book;
+using Server.Services;
+using Server.Services.Interfaces;
+using Server.Utils;
 
 namespace Server.Controllers
 {
-    internal class BookController: IController
+    internal class BookController : IController
     {
         Serilog.ILogger logger;
 

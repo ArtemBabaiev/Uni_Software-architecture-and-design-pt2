@@ -4,15 +4,10 @@ using Server.Models;
 using Server.Network;
 using Server.ObjectManagers;
 using Server.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Services
 {
-    internal class GenreService: IGenreService
+    internal class GenreService : IGenreService
     {
         MapperConfiguration mapConfig;
 

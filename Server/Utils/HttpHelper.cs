@@ -1,6 +1,4 @@
 ﻿using Serilog;
-using Server.Configuration;
-using Server.ObjectManagers;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -22,7 +20,7 @@ namespace Server.Utils
                     response.OutputStream.Write(buffer, 0, buffer.Length);
                 }
 
-                logger.Information($"Request finished HTTP/{ctx.Request.ProtocolVersion} {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery} - - - {(int) action.StatusCode}");
+                logger.Information($"Request finished HTTP/{ctx.Request.ProtocolVersion} {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery} - - - {(int)action.StatusCode}");
             }
         }
 

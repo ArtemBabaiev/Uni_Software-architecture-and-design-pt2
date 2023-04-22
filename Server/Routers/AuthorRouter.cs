@@ -1,9 +1,7 @@
 ﻿using Serilog;
 using Server.Configuration;
 using Server.Controllers;
-using Server.DTOs;
 using Server.DTOs.Author;
-using Server.ObjectManagers;
 using Server.Routers.Interfaces;
 using Server.Utils;
 using System.Net;

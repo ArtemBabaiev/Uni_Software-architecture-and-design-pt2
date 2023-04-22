@@ -4,17 +4,12 @@ using Server.Controllers;
 using Server.DTOs.Genre;
 using Server.Routers.Interfaces;
 using Server.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Server.Routers
 {
-    internal class GenreRouter: IRouter
+    internal class GenreRouter : IRouter
     {
         private readonly string RouterPath = ApiPath.Genre;
         public ILogger Logger { get; protected set; }

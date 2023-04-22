@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Serilog;
-using Serilog.Configuration;
-using Server.Services.Interfaces;
 
 namespace Server.ObjectManagers
 {
