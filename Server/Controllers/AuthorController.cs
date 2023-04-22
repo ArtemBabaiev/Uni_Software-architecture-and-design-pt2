@@ -1,6 +1,5 @@
 ﻿using Serilog;
 using Server.Controllers.Interfaces;
-using Server.DTOs;
 using Server.DTOs.Author;
 using Server.ObjectManagers;
 using Server.Services;
@@ -19,12 +18,12 @@ namespace Server.Controllers
         }
 
 
-        public async Task<ActionResponse> Get(long id)
+        public async Task<ActionData> Get(long id)
         {
             return await Get(id, new AuthorService());
         }
 
-        private async Task<ActionResponse> Get(long id, IAuthorService authorService)
+        private async Task<ActionData> Get(long id, IAuthorService authorService)
         {
             try
             {
@@ -40,16 +39,16 @@ namespace Server.Controllers
             catch (Exception ex)
             {
                 logger.Error(ex, $"Something went wrong inside GetByIdAsync action with {id}");
-                return ActionHelper.InternalServerError();
+                return ActionHelper.InternalServerError(ex.Message);
             }
         }
 
-        public async Task<ActionResponse> Get()
+        public async Task<ActionData> Get()
         {
             return await Get(new AuthorService());
         }
 
-        private async Task<ActionResponse> Get(IAuthorService authorService)
+        private async Task<ActionData> Get(IAuthorService authorService)
         {
             try
             {
@@ -60,16 +59,16 @@ namespace Server.Controllers
             catch (Exception ex)
             {
                 logger.Error(ex, $"Something went wrong inside GetAllAsync() action");
-                return ActionHelper.InternalServerError();
+                return ActionHelper.InternalServerError(ex.Message);
             }
         }
 
-        public async Task<ActionResponse> Post(AuthorCreateRequest request)
+        public async Task<ActionData> Post(AuthorCreateRequest request)
         {
             return await Post(request, new AuthorService());
         }
 
-        private async Task<ActionResponse> Post(AuthorCreateRequest request, IAuthorService authorService)
+        private async Task<ActionData> Post(AuthorCreateRequest request, IAuthorService authorService)
         {
             try
             {
@@ -80,16 +79,16 @@ namespace Server.Controllers
             catch (Exception ex)
             {
                 logger.Error(ex, $"Something went wrong inside CreateAsync() action");
-                return ActionHelper.InternalServerError();
+                return ActionHelper.InternalServerError(ex.Message);
             }
         }
 
-        public async Task<ActionResponse> Put(long id, AuthorUpdateRequest request)
+        public async Task<ActionData> Put(long id, AuthorUpdateRequest request)
         {
             return await Put(id, request, new AuthorService());
         }
 
-        private async Task<ActionResponse> Put(long id, AuthorUpdateRequest request, IAuthorService authorService)
+        private async Task<ActionData> Put(long id, AuthorUpdateRequest request, IAuthorService authorService)
         {
             try
             {
@@ -104,16 +103,16 @@ namespace Server.Controllers
             catch (Exception ex)
             {
                 logger.Error(ex, $"Something went wrong inside UpdateAsync() action");
-                return ActionHelper.InternalServerError();
+                return ActionHelper.InternalServerError(ex.Message);
             }
         }
 
-        public async Task<ActionResponse> Delete(long id)
+        public async Task<ActionData> Delete(long id)
         {
             return await Delete(id, new AuthorService());
         }
 
-        public async Task<ActionResponse> Delete(long id, IAuthorService authorService)
+        public async Task<ActionData> Delete(long id, IAuthorService authorService)
         {
             try
             {
@@ -127,7 +126,7 @@ namespace Server.Controllers
             catch (Exception ex)
             {
                 logger.Error(ex, $"Something went wrong inside DeleteAsync() action");
-                return ActionHelper.InternalServerError();
+                return ActionHelper.InternalServerError(ex.Message);
             }
         }
 

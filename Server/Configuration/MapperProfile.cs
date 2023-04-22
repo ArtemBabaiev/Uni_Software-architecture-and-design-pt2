@@ -13,10 +13,7 @@ namespace Server.Configuration
 
         public void CreateAuthorMap()
         {
-            CreateMap<Author, AuthorResponse>()
-                .ForMember(
-                    response => response.LastUpdatedAt,
-                    conf => conf.MapFrom(model => model.UpdatedAt));
+            CreateMap<Author, AuthorResponse>();
             CreateMap<AuthorCreateRequest, Author>();
             CreateMap<AuthorUpdateRequest, Author>();
         }

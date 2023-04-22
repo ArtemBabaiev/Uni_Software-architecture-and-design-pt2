@@ -1,4 +1,4 @@
-﻿namespace Server.DTOs
+﻿namespace Server.Network
 {
     internal class DeleteRespose
     {

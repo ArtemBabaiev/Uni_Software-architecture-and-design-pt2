@@ -1,5 +1,5 @@
-﻿using Server.DTOs;
-using Server.DTOs.Author;
+﻿using Server.DTOs.Author;
+using Server.Network;
 
 namespace Server.Services.Interfaces
 {

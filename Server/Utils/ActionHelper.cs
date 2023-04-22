@@ -1,29 +1,38 @@
-﻿using Server.DTOs;
+﻿using Server.Network;
 using System.Net;
 
 namespace Server.Utils
 {
     internal class ActionHelper
     {
-        public static ActionResponse Ok(object responseObj)
+        public static ActionData Ok(object responseObj)
         {
-            return new ActionResponse(responseObj, HttpStatusCode.OK);
+            return new ActionData(responseObj, HttpStatusCode.OK);
         }
 
-        public static ActionResponse NotFound()
+        public static ActionData NotFound()
         {
-            return new ActionResponse(HttpStatusCode.NotFound);
+            return new ActionData(HttpStatusCode.NotFound);
         }
 
-        public static ActionResponse BadRequest()
+        public static ActionData BadRequest()
         {
-            return new ActionResponse(HttpStatusCode.BadRequest);
+            return new ActionData(HttpStatusCode.BadRequest);
         }
 
-        public static ActionResponse InternalServerError()
+        public static ActionData BadRequest(string errorMessage)
         {
-            return new ActionResponse(HttpStatusCode.InternalServerError);
+            return new ActionData(new ErrorResponse { ErrorMessage = errorMessage }, HttpStatusCode.BadRequest);
+        }
 
+        public static ActionData InternalServerError()
+        {
+            return new ActionData(HttpStatusCode.InternalServerError);
+        }
+
+        public static ActionData InternalServerError(string errorMessage)
+        {
+            return new ActionData(new ErrorResponse { ErrorMessage = errorMessage }, HttpStatusCode.InternalServerError);
         }
     }
 }

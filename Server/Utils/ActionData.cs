@@ -1,18 +1,18 @@
 ﻿using System.Net;
 
-namespace Server.DTOs
+namespace Server.Utils
 {
-    internal class ActionResponse
+    internal class ActionData
     {
         public object? ResponseObj { get; protected set; }
         public HttpStatusCode StatusCode { get; protected set; }
-        public ActionResponse(object? responseObj, HttpStatusCode statusCode)
+        public ActionData(object? responseObj, HttpStatusCode statusCode)
         {
             ResponseObj = responseObj;
             StatusCode = statusCode;
         }
 
-        public ActionResponse(HttpStatusCode statusCode) : this(null, statusCode)
+        public ActionData(HttpStatusCode statusCode) : this(null, statusCode)
         {
         }
     }

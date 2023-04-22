@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Server.DTOs
+namespace Server.Network
 {
     internal class RequestData
     {

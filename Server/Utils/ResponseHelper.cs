@@ -1,6 +1,6 @@
 ﻿using Serilog;
 using Server.Configuration;
-using Server.DTOs;
+using Server.Network;
 using Server.ObjectManagers;
 using System.Net;
 using System.Text;
@@ -11,7 +11,7 @@ namespace Server.Utils
     internal static class ResponseHelper
     {
         private static ILogger logger = Log.Logger;
-        public static void PackResponse(HttpListenerContext ctx, ActionResponse action, string contentType = "application/json")
+        public static void PackResponse(HttpListenerContext ctx, ActionData action, string contentType = "application/json")
         {
             using (var response = ctx.Response)
             {
