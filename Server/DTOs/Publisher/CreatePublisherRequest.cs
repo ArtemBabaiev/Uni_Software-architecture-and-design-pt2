@@ -1,4 +1,4 @@
-﻿namespace Server.DTOs.Genre
+﻿namespace Server.DTOs.Publisher
 {
     internal class CreatePublisherRequest
     {

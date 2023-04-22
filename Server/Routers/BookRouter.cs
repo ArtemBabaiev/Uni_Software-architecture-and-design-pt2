@@ -1,26 +1,29 @@
 ﻿using Serilog;
 using Server.Configuration;
 using Server.Controllers;
-using Server.DTOs;
-using Server.DTOs.Author;
-using Server.ObjectManagers;
+using Server.DTOs.Book;
 using Server.Routers.Interfaces;
 using Server.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Server.Routers
 {
-    internal class AuthorRouter : IRouter
+    internal class BookRouter: IRouter
     {
-        private readonly string RouterPath = ApiPath.Author;
+        private readonly string RouterPath = ApiPath.Book;
         public ILogger Logger { get; protected set; }
-        private AuthorController _authorController;
+        private BookController _bookController;
 
-        public AuthorRouter()
+        public BookRouter()
         {
-            Logger = Log.Logger.ForContext<AuthorRouter>();
-            _authorController = new AuthorController();
+            Logger = Log.Logger.ForContext<BookRouter>();
+            _bookController = new BookController();
         }
 
         public async void RouteDelete(HttpListenerContext ctx)
@@ -31,7 +34,7 @@ namespace Server.Routers
             if (Regex.IsMatch(reqData.NoApiPath, ApiPath.IdRegex))
             {
                 var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                var actionResponse = await _authorController.Delete(param);
+                var actionResponse = await _bookController.Delete(param);
                 HttpHelper.PackResponse(ctx, actionResponse);
             }
             else
@@ -47,12 +50,12 @@ namespace Server.Routers
             if (Regex.IsMatch(reqData.NoApiPath, ApiPath.IdRegex))
             {
                 var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                var actionRespose = await _authorController.Get(param);
+                var actionRespose = await _bookController.Get(param);
                 HttpHelper.PackResponse(ctx, actionRespose);
             }
             else if (Regex.IsMatch(reqData.NoApiPath, ApiPath.BlankRegex))
             {
-                var actionRespose = await _authorController.Get();
+                var actionRespose = await _bookController.Get();
                 HttpHelper.PackResponse(ctx, actionRespose);
             }
             else
@@ -73,7 +76,7 @@ namespace Server.Routers
                     return;
                 }
 
-                var actionResponse = await _authorController.Post(reqData.GetBodyObject<CreateAuthorRequest>());
+                var actionResponse = await _bookController.Post(reqData.GetBodyObject<CreateBookRequest>());
                 HttpHelper.PackResponse(ctx, actionResponse);
             }
             else
@@ -94,7 +97,7 @@ namespace Server.Routers
                 }
 
                 var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                var actionResponse = await _authorController.Put(param, reqData.GetBodyObject<UpdateAuthorRequest>());
+                var actionResponse = await _bookController.Put(param, reqData.GetBodyObject<UpdateBookRequest>());
                 HttpHelper.PackResponse(ctx, actionResponse);
             }
             else

@@ -13,6 +13,10 @@ namespace Server
     {
         HttpListener listener;
         IRouter authorRouter;
+        IRouter bookRouter;
+        IRouter exemplarRouter;
+        IRouter genreRouter;
+        IRouter publisherRouter;
         ILogger logger;
         private int numberOfEntries;
 
@@ -20,9 +24,13 @@ namespace Server
         {
             this.listener = new HttpListener();
             listener.Prefixes.Add(prefix);
-            authorRouter = new AuthorRouter();
             logger = Log.Logger.ForContext<Listener>();
             this.numberOfEntries = Environment.ProcessorCount * toAccept;
+            authorRouter = new AuthorRouter();
+            bookRouter = new BookRouter();
+            exemplarRouter = new ExemplarRouter();
+            genreRouter = new GenreRouter();
+            publisherRouter = new PublisherRouter();
         }
 
         public async void StartListening()
@@ -53,15 +61,31 @@ namespace Server
         {
             Log.Logger.Information($"Request starting HTTP/{context.Request.ProtocolVersion} {context.Request.HttpMethod} {context.Request.Url.PathAndQuery} - - ");
 
-            var url = context.Request.Url;
-            var path = url.AbsolutePath;
+            var path = context.Request.Url.AbsolutePath;
+
             if (Regex.IsMatch(path, ApiPath.AuthorRegex))
             {
                 authorRouter.Route(context);
             }
+            else if (Regex.IsMatch(path, ApiPath.BookRegex))
+            {
+                bookRouter.Route(context);
+            }
+            else if (Regex.IsMatch(path, ApiPath.ExemplarRegex))
+            {
+                exemplarRouter.Route(context);
+            }
+            else if (Regex.IsMatch(path, ApiPath.GenreRegex))
+            {
+                genreRouter.Route(context);
+            }
+            else if (Regex.IsMatch(path, ApiPath.PublisherRegex))
+            {
+                publisherRouter.Route(context);
+            }
             else
             {
-                ResponseHelper.PackResponse(context, ActionHelper.NotFound());
+                HttpHelper.PackResponse(context, ActionHelper.NotFound());
             }
         }
     }

@@ -1,39 +1,43 @@
 ﻿using Serilog;
-using Server.Controllers.Interfaces;
-using Server.DTOs.Author;
-using Server.ObjectManagers;
-using Server.Services;
+using Server.DTOs.Book;
 using Server.Services.Interfaces;
+using Server.Services;
 using Server.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Server.Controllers.Interfaces;
 
 namespace Server.Controllers
 {
-    internal class AuthorController : IController
+    internal class BookController: IController
     {
         Serilog.ILogger logger;
 
-        public AuthorController()
+        public BookController()
         {
-            logger = Log.Logger.ForContext<AuthorController>();
+            logger = Log.Logger.ForContext<BookController>();
         }
 
 
         public async Task<ActionData> Get(long id)
         {
-            return await Get(id, new AuthorService());
+            return await Get(id, new BookService());
         }
 
-        private async Task<ActionData> Get(long id, IAuthorService authorService)
+        private async Task<ActionData> Get(long id, IBookService bookService)
         {
             try
             {
-                var responseObj = await authorService.GetByIdAsync(id);
+                var responseObj = await bookService.GetByIdAsync(id);
                 if (responseObj == null)
                 {
-                    logger.Error($"Author with id: {id}, not found");
+                    logger.Error($"Book with id: {id}, not found");
                     return ActionHelper.NotFound();
                 }
-                logger.Information($"Returned author with id: {id}");
+                logger.Information($"Returned book with id: {id}");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -45,15 +49,15 @@ namespace Server.Controllers
 
         public async Task<ActionData> Get()
         {
-            return await Get(new AuthorService());
+            return await Get(new BookService());
         }
 
-        private async Task<ActionData> Get(IAuthorService authorService)
+        private async Task<ActionData> Get(IBookService bookService)
         {
             try
             {
-                var responseObj = await authorService.GetAllAsync();
-                logger.Information($"Returned all authors from database");
+                var responseObj = await bookService.GetAllAsync();
+                logger.Information($"Returned all books from database");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -63,17 +67,17 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Post(CreateAuthorRequest request)
+        public async Task<ActionData> Post(CreateBookRequest request)
         {
-            return await Post(request, new AuthorService());
+            return await Post(request, new BookService());
         }
 
-        private async Task<ActionData> Post(CreateAuthorRequest request, IAuthorService authorService)
+        private async Task<ActionData> Post(CreateBookRequest request, IBookService bookService)
         {
             try
             {
-                var responseObj = await authorService.CreateAsync(request);
-                logger.Information($"Created Author object in DB");
+                var responseObj = await bookService.CreateAsync(request);
+                logger.Information($"Created Book object in DB");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -83,21 +87,21 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Put(long id, UpdateAuthorRequest request)
+        public async Task<ActionData> Put(long id, UpdateBookRequest request)
         {
-            return await Put(id, request, new AuthorService());
+            return await Put(id, request, new BookService());
         }
 
-        private async Task<ActionData> Put(long id, UpdateAuthorRequest request, IAuthorService authorService)
+        private async Task<ActionData> Put(long id, UpdateBookRequest request, IBookService bookService)
         {
             try
             {
-                var responseObj = await authorService.UpdateAsync(id, request);
+                var responseObj = await bookService.UpdateAsync(id, request);
                 if (responseObj == null)
                 {
                     return ActionHelper.NotFound();
                 }
-                logger.Information($"Updated Author object in DB with id: {id}");
+                logger.Information($"Updated Book object in DB with id: {id}");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -109,17 +113,17 @@ namespace Server.Controllers
 
         public async Task<ActionData> Delete(long id)
         {
-            return await Delete(id, new AuthorService());
+            return await Delete(id, new BookService());
         }
 
-        public async Task<ActionData> Delete(long id, IAuthorService authorService)
+        public async Task<ActionData> Delete(long id, IBookService bookService)
         {
             try
             {
-                var result = await authorService.DeleteAsync(id);
+                var result = await bookService.DeleteAsync(id);
                 if (result.IsDeleted)
                 {
-                    logger.Information($"Deleted author with id: {id}");
+                    logger.Information($"Deleted book with id: {id}");
                 }
                 return ActionHelper.Ok(result);
             }

@@ -1,39 +1,43 @@
 ﻿using Serilog;
-using Server.Controllers.Interfaces;
-using Server.DTOs.Author;
-using Server.ObjectManagers;
-using Server.Services;
+using Server.DTOs.Exemplar;
 using Server.Services.Interfaces;
+using Server.Services;
 using Server.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Server.Controllers.Interfaces;
 
 namespace Server.Controllers
 {
-    internal class AuthorController : IController
+    internal class ExemplarController: IController
     {
         Serilog.ILogger logger;
 
-        public AuthorController()
+        public ExemplarController()
         {
-            logger = Log.Logger.ForContext<AuthorController>();
+            logger = Log.Logger.ForContext<ExemplarController>();
         }
 
 
         public async Task<ActionData> Get(long id)
         {
-            return await Get(id, new AuthorService());
+            return await Get(id, new ExemplarService());
         }
 
-        private async Task<ActionData> Get(long id, IAuthorService authorService)
+        private async Task<ActionData> Get(long id, IExemplarService exemplarService)
         {
             try
             {
-                var responseObj = await authorService.GetByIdAsync(id);
+                var responseObj = await exemplarService.GetByIdAsync(id);
                 if (responseObj == null)
                 {
-                    logger.Error($"Author with id: {id}, not found");
+                    logger.Error($"Exemplar with id: {id}, not found");
                     return ActionHelper.NotFound();
                 }
-                logger.Information($"Returned author with id: {id}");
+                logger.Information($"Returned exemplar with id: {id}");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -45,15 +49,15 @@ namespace Server.Controllers
 
         public async Task<ActionData> Get()
         {
-            return await Get(new AuthorService());
+            return await Get(new ExemplarService());
         }
 
-        private async Task<ActionData> Get(IAuthorService authorService)
+        private async Task<ActionData> Get(IExemplarService exemplarService)
         {
             try
             {
-                var responseObj = await authorService.GetAllAsync();
-                logger.Information($"Returned all authors from database");
+                var responseObj = await exemplarService.GetAllAsync();
+                logger.Information($"Returned all exemplars from database");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -63,17 +67,17 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Post(CreateAuthorRequest request)
+        public async Task<ActionData> Post(CreateExemplarRequest request)
         {
-            return await Post(request, new AuthorService());
+            return await Post(request, new ExemplarService());
         }
 
-        private async Task<ActionData> Post(CreateAuthorRequest request, IAuthorService authorService)
+        private async Task<ActionData> Post(CreateExemplarRequest request, IExemplarService exemplarService)
         {
             try
             {
-                var responseObj = await authorService.CreateAsync(request);
-                logger.Information($"Created Author object in DB");
+                var responseObj = await exemplarService.CreateAsync(request);
+                logger.Information($"Created Exemplar object in DB");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -83,21 +87,21 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Put(long id, UpdateAuthorRequest request)
+        public async Task<ActionData> Put(long id, UpdateExemplarRequest request)
         {
-            return await Put(id, request, new AuthorService());
+            return await Put(id, request, new ExemplarService());
         }
 
-        private async Task<ActionData> Put(long id, UpdateAuthorRequest request, IAuthorService authorService)
+        private async Task<ActionData> Put(long id, UpdateExemplarRequest request, IExemplarService exemplarService)
         {
             try
             {
-                var responseObj = await authorService.UpdateAsync(id, request);
+                var responseObj = await exemplarService.UpdateAsync(id, request);
                 if (responseObj == null)
                 {
                     return ActionHelper.NotFound();
                 }
-                logger.Information($"Updated Author object in DB with id: {id}");
+                logger.Information($"Updated Exemplar object in DB with id: {id}");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -109,17 +113,17 @@ namespace Server.Controllers
 
         public async Task<ActionData> Delete(long id)
         {
-            return await Delete(id, new AuthorService());
+            return await Delete(id, new ExemplarService());
         }
 
-        public async Task<ActionData> Delete(long id, IAuthorService authorService)
+        public async Task<ActionData> Delete(long id, IExemplarService exemplarService)
         {
             try
             {
-                var result = await authorService.DeleteAsync(id);
+                var result = await exemplarService.DeleteAsync(id);
                 if (result.IsDeleted)
                 {
-                    logger.Information($"Deleted author with id: {id}");
+                    logger.Information($"Deleted exemplar with id: {id}");
                 }
                 return ActionHelper.Ok(result);
             }

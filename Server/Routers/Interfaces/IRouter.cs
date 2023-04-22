@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Server.Utils;
+using System.Net;
 
 namespace Server.Routers.Interfaces
 {
@@ -29,11 +30,8 @@ namespace Server.Routers.Interfaces
             }
             catch (Exception ex)
             {
-                using (HttpListenerResponse response = ctx.Response)
-                {
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                }
-                Logger.Error($"Request routing or unpacking error. Exception: {ex.Message}");
+                Logger.Error(ex, "Somethig went wrong during routing process");
+                HttpHelper.PackResponse(ctx, ActionHelper.InternalServerError(ex.Message));
             }
         }
         void RouteGet(HttpListenerContext ctx);

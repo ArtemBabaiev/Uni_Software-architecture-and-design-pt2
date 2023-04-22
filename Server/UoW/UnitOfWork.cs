@@ -9,6 +9,11 @@ namespace Server.UoW
     internal class UnitOfWork : IUnitOfWork, IDisposable
     {
         public IAuthorReposiitory AuthorRepository { get; }
+        public IBookRepository BookRepository { get; }
+        public IExemplarRepository ExemplarRepository { get; }
+        public IGenreRepository GenreRepository { get; }
+        public IPublisherRepository PublisherRepository { get; }
+
         protected readonly IDbTransaction _dbTransaction;
 
         public UnitOfWork(SqlConnection sqlConnection)
@@ -16,6 +21,10 @@ namespace Server.UoW
             sqlConnection.Open();
             _dbTransaction = sqlConnection.BeginTransaction();
             AuthorRepository = new AuthorRepository(sqlConnection, _dbTransaction);
+            BookRepository = new BookRepository(sqlConnection, _dbTransaction);
+            ExemplarRepository = new ExemplarRepository(sqlConnection, _dbTransaction);
+            GenreRepository = new GenreRepository(sqlConnection, _dbTransaction);
+            PublisherRepository = new PublisherRepository(sqlConnection, _dbTransaction);
         }
 
         public void Commit()

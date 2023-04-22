@@ -1,39 +1,43 @@
 ﻿using Serilog;
-using Server.Controllers.Interfaces;
-using Server.DTOs.Author;
-using Server.ObjectManagers;
-using Server.Services;
+using Server.DTOs.Genre;
 using Server.Services.Interfaces;
+using Server.Services;
 using Server.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Server.Controllers.Interfaces;
 
 namespace Server.Controllers
 {
-    internal class AuthorController : IController
+    internal class GenreController : IController
     {
         Serilog.ILogger logger;
 
-        public AuthorController()
+        public GenreController()
         {
-            logger = Log.Logger.ForContext<AuthorController>();
+            logger = Log.Logger.ForContext<GenreController>();
         }
 
 
         public async Task<ActionData> Get(long id)
         {
-            return await Get(id, new AuthorService());
+            return await Get(id, new GenreService());
         }
 
-        private async Task<ActionData> Get(long id, IAuthorService authorService)
+        private async Task<ActionData> Get(long id, IGenreService genreService)
         {
             try
             {
-                var responseObj = await authorService.GetByIdAsync(id);
+                var responseObj = await genreService.GetByIdAsync(id);
                 if (responseObj == null)
                 {
-                    logger.Error($"Author with id: {id}, not found");
+                    logger.Error($"Genre with id: {id}, not found");
                     return ActionHelper.NotFound();
                 }
-                logger.Information($"Returned author with id: {id}");
+                logger.Information($"Returned genre with id: {id}");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -45,15 +49,15 @@ namespace Server.Controllers
 
         public async Task<ActionData> Get()
         {
-            return await Get(new AuthorService());
+            return await Get(new GenreService());
         }
 
-        private async Task<ActionData> Get(IAuthorService authorService)
+        private async Task<ActionData> Get(IGenreService genreService)
         {
             try
             {
-                var responseObj = await authorService.GetAllAsync();
-                logger.Information($"Returned all authors from database");
+                var responseObj = await genreService.GetAllAsync();
+                logger.Information($"Returned all genres from database");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -63,17 +67,17 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Post(CreateAuthorRequest request)
+        public async Task<ActionData> Post(CreateGenreRequest request)
         {
-            return await Post(request, new AuthorService());
+            return await Post(request, new GenreService());
         }
 
-        private async Task<ActionData> Post(CreateAuthorRequest request, IAuthorService authorService)
+        private async Task<ActionData> Post(CreateGenreRequest request, IGenreService genreService)
         {
             try
             {
-                var responseObj = await authorService.CreateAsync(request);
-                logger.Information($"Created Author object in DB");
+                var responseObj = await genreService.CreateAsync(request);
+                logger.Information($"Created Genre object in DB");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -83,21 +87,21 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Put(long id, UpdateAuthorRequest request)
+        public async Task<ActionData> Put(long id, UpdateGenreRequest request)
         {
-            return await Put(id, request, new AuthorService());
+            return await Put(id, request, new GenreService());
         }
 
-        private async Task<ActionData> Put(long id, UpdateAuthorRequest request, IAuthorService authorService)
+        private async Task<ActionData> Put(long id, UpdateGenreRequest request, IGenreService genreService)
         {
             try
             {
-                var responseObj = await authorService.UpdateAsync(id, request);
+                var responseObj = await genreService.UpdateAsync(id, request);
                 if (responseObj == null)
                 {
                     return ActionHelper.NotFound();
                 }
-                logger.Information($"Updated Author object in DB with id: {id}");
+                logger.Information($"Updated Genre object in DB with id: {id}");
                 return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
@@ -109,17 +113,17 @@ namespace Server.Controllers
 
         public async Task<ActionData> Delete(long id)
         {
-            return await Delete(id, new AuthorService());
+            return await Delete(id, new GenreService());
         }
 
-        public async Task<ActionData> Delete(long id, IAuthorService authorService)
+        public async Task<ActionData> Delete(long id, IGenreService genreService)
         {
             try
             {
-                var result = await authorService.DeleteAsync(id);
+                var result = await genreService.DeleteAsync(id);
                 if (result.IsDeleted)
                 {
-                    logger.Information($"Deleted author with id: {id}");
+                    logger.Information($"Deleted genre with id: {id}");
                 }
                 return ActionHelper.Ok(result);
             }

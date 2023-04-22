@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace Server.Utils
 {
-    internal static class ResponseHelper
+    internal static class HttpHelper
     {
         private static ILogger logger = Log.Logger;
         public static void PackResponse(HttpListenerContext ctx, ActionData action, string contentType = "application/json")
@@ -31,7 +31,7 @@ namespace Server.Utils
         {
             var url = request.Url;
             var qParams = GetQueryParams(url.Query);
-            var noApi = url.AbsolutePath.Replace(ApiPath.Author, "");
+            var noApi = url.AbsolutePath.Replace(apiPath, "");
 
             var requestData = new RequestData() { AbsolutePath = url.AbsolutePath, QueryParams = qParams, NoApiPath = noApi };
 

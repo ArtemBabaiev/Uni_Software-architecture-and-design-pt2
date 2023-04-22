@@ -1,4 +1,4 @@
-﻿namespace Server.DTOs.Author
+﻿namespace Server.DTOs.Genre
 {
     internal class UpdateGenreRequest
     {
