@@ -16,7 +16,7 @@ namespace Server.Services
             this.mapConfig = SingletonPool.MapperConfiguration;
         }
 
-        public async Task<AuthorResponse> CreateAsync(AuthorCreateRequest request)
+        public async Task<GetAuthorResponse> CreateAsync(CreateAuthorRequest request)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -28,7 +28,7 @@ namespace Server.Services
                 var newId = await uow.AuthorRepository.AddAsync(author);
                 var newAuthor = await uow.AuthorRepository.GetAsync(newId);
                 uow.Commit();
-                return mapper.Map<AuthorResponse>(newAuthor);
+                return mapper.Map<GetAuthorResponse>(newAuthor);
 
             }
         }
@@ -45,7 +45,7 @@ namespace Server.Services
             }
         }
 
-        public async Task<IEnumerable<AuthorResponse>> GetAllAsync()
+        public async Task<IEnumerable<GetAuthorResponse>> GetAllAsync()
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -53,11 +53,11 @@ namespace Server.Services
             {
                 var authors = await uow.AuthorRepository.GetAllAsync();
                 uow.Commit();
-                return authors?.Select(mapper.Map<Author, AuthorResponse>);
+                return authors?.Select(mapper.Map<Author, GetAuthorResponse>);
             }
         }
 
-        public async Task<AuthorResponse> GetByIdAsync(long id)
+        public async Task<GetAuthorResponse> GetByIdAsync(long id)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -65,11 +65,11 @@ namespace Server.Services
             {
                 var author = await uow.AuthorRepository.GetAsync(id);
                 uow.Commit();
-                return mapper.Map<AuthorResponse>(author);
+                return mapper.Map<GetAuthorResponse>(author);
             }
         }
 
-        public async Task<AuthorResponse> UpdateAsync(long id, AuthorUpdateRequest request)
+        public async Task<GetAuthorResponse> UpdateAsync(long id, UpdateAuthorRequest request)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -85,7 +85,7 @@ namespace Server.Services
                     await uow.AuthorRepository.ReplaceAsync(toUpdate);
                     var updated = await uow.AuthorRepository.GetAsync(id);
                     uow.Commit();
-                    return mapper.Map<AuthorResponse>(updated);
+                    return mapper.Map<GetAuthorResponse>(updated);
                 }
                 return null;
             }

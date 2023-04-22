@@ -16,6 +16,6 @@ namespace Server.Models
         public long BookId { get; set; }
 
         [DescriptionAttribute("ignore")]
-        public string? BookName { get; set; }
+        public Book? Book { get; set; }
     }
 }

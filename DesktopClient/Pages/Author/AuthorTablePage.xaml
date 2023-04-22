@@ -56,8 +56,13 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Last Updated At" 
-                                    Binding="{Binding LastUpdatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
+                <DataGridTextColumn Header="Created" 
+                                    Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
+                                    IsReadOnly="True"
+                                    Width="100"/>
+
+                <DataGridTextColumn Header="Last Updated" 
+                                    Binding="{Binding UpdatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
                                     IsReadOnly="True"
                                     Width="100"/>
 

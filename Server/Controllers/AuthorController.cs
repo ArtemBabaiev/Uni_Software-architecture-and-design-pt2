@@ -63,12 +63,12 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Post(AuthorCreateRequest request)
+        public async Task<ActionData> Post(CreateAuthorRequest request)
         {
             return await Post(request, new AuthorService());
         }
 
-        private async Task<ActionData> Post(AuthorCreateRequest request, IAuthorService authorService)
+        private async Task<ActionData> Post(CreateAuthorRequest request, IAuthorService authorService)
         {
             try
             {
@@ -83,12 +83,12 @@ namespace Server.Controllers
             }
         }
 
-        public async Task<ActionData> Put(long id, AuthorUpdateRequest request)
+        public async Task<ActionData> Put(long id, UpdateAuthorRequest request)
         {
             return await Put(id, request, new AuthorService());
         }
 
-        private async Task<ActionData> Put(long id, AuthorUpdateRequest request, IAuthorService authorService)
+        private async Task<ActionData> Put(long id, UpdateAuthorRequest request, IAuthorService authorService)
         {
             try
             {

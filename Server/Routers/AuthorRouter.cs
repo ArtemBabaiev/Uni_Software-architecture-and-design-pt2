@@ -72,7 +72,7 @@ namespace Server.Routers
                     return;
                 }
 
-                var actionResponse = await _authorController.Post(reqData.GetBodyObject<AuthorCreateRequest>());
+                var actionResponse = await _authorController.Post(reqData.GetBodyObject<CreateAuthorRequest>());
                 ResponseHelper.PackResponse(ctx, actionResponse);
             }
             else
@@ -93,7 +93,7 @@ namespace Server.Routers
                 }
 
                 var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                var actionResponse = await _authorController.Put(param, reqData.GetBodyObject<AuthorUpdateRequest>());
+                var actionResponse = await _authorController.Put(param, reqData.GetBodyObject<UpdateAuthorRequest>());
                 ResponseHelper.PackResponse(ctx, actionResponse);
             }
             else
