@@ -1,7 +1,9 @@
-﻿using Server.Configuration;
+﻿using Serilog;
+using Server.Configuration;
 using Server.ObjectManagers;
 using Server.Routers;
 using Server.Routers.Interfaces;
+using Server.Utils;
 using System.Net;
 using System.Text.RegularExpressions;
 
@@ -11,7 +13,7 @@ namespace Server
     {
         HttpListener listener;
         IRouter authorRouter;
-        Serilog.ILogger logger;
+        ILogger logger;
         private int numberOfEntries;
 
         public Listener(string prefix, int toAccept = 2)
@@ -19,7 +21,7 @@ namespace Server
             this.listener = new HttpListener();
             listener.Prefixes.Add(prefix);
             authorRouter = new AuthorRouter();
-            logger = SingletonPool.Logger.ForContext<Listener>();
+            logger = Log.Logger.ForContext<Listener>();
             this.numberOfEntries = Environment.ProcessorCount * toAccept;
         }
 
@@ -42,7 +44,6 @@ namespace Server
                 {
                     sem.Release();
                     var ctx = await t;
-                    logger.Information($"Incoming request: {ctx.Request.Url.PathAndQuery}");
                     ProcessRequest(ctx);
                 });
             }
@@ -50,6 +51,8 @@ namespace Server
 
         public void ProcessRequest(HttpListenerContext context)
         {
+            Log.Logger.Information($"Request starting HTTP/{context.Request.ProtocolVersion} {context.Request.HttpMethod} {context.Request.Url.PathAndQuery} - - ");
+
             var url = context.Request.Url;
             var path = url.AbsolutePath;
             if (Regex.IsMatch(path, ApiPath.AuthorRegex))
@@ -58,7 +61,7 @@ namespace Server
             }
             else
             {
-                logger.Information($"Invalid request url path: {context.Request.Url.PathAndQuery}");
+                ResponseHelper.PackResponse(context, ActionHelper.NotFound());
             }
         }
     }

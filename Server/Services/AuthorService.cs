@@ -16,7 +16,7 @@ namespace Server.Services
             this.mapConfig = SingletonPool.MapperConfiguration;
         }
 
-        public async Task<AuthorResponse> CreateAuthor(AuthorCreateRequest request)
+        public async Task<AuthorResponse> CreateAsync(AuthorCreateRequest request)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -33,7 +33,7 @@ namespace Server.Services
             }
         }
 
-        public async Task<DeleteRespose> DeleteAuthor(long id)
+        public async Task<DeleteRespose> DeleteAsync(long id)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -45,7 +45,7 @@ namespace Server.Services
             }
         }
 
-        public async Task<IEnumerable<AuthorResponse>> GetAllAuthors()
+        public async Task<IEnumerable<AuthorResponse>> GetAllAsync()
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -57,7 +57,7 @@ namespace Server.Services
             }
         }
 
-        public async Task<AuthorResponse> GetAuthorById(long id)
+        public async Task<AuthorResponse> GetByIdAsync(long id)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
@@ -69,22 +69,25 @@ namespace Server.Services
             }
         }
 
-        public async Task<AuthorResponse> UpdateAuthor(long id, AuthorUpdateRequest request)
+        public async Task<AuthorResponse> UpdateAsync(long id, AuthorUpdateRequest request)
         {
             IMapper mapper = mapConfig.CreateMapper();
             using (var connection = ConnectionManager.GetSqlConnection())
             using (var uow = UowManager.GetUnitOfWork(connection))
             {
-
                 var toUpdate = mapper.Map<Author>(request);
                 var inDb = await uow.AuthorRepository.GetAsync(id);
-                toUpdate.Id = id;
-                toUpdate.CreatedAt = inDb.CreatedAt;
-                toUpdate.UpdatedAt = DateTime.Now;
-                await uow.AuthorRepository.ReplaceAsync(toUpdate);
-                var updated = await uow.AuthorRepository.GetAsync(id);
-                uow.Commit();
-                return mapper.Map<AuthorResponse>(updated);
+                if (toUpdate != null)
+                {
+                    toUpdate.Id = id;
+                    toUpdate.CreatedAt = inDb.CreatedAt;
+                    toUpdate.UpdatedAt = DateTime.Now;
+                    await uow.AuthorRepository.ReplaceAsync(toUpdate);
+                    var updated = await uow.AuthorRepository.GetAsync(id);
+                    uow.Commit();
+                    return mapper.Map<AuthorResponse>(updated);
+                }
+                return null;
             }
         }
     }

@@ -25,14 +25,11 @@ namespace Server
             SingletonPool.MapperConfiguration = new MapperConfiguration(cfg =>
                 cfg.AddProfile<MapperProfile>()
             );
-            var mt = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Properties:j} {Message:lj}{NewLine}{Exception}";
-            SingletonPool.Logger = new LoggerConfiguration()
+            var mt = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Properties:j} {Message:lj}{NewLine}{Exception}";
+            Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console(outputTemplate: mt)
-                .WriteTo.File("log.txt", outputTemplate: mt)
+                .WriteTo.File("log.txt", outputTemplate: mt, shared: true)
                 .CreateLogger();
-
-            SingletonPool.AuthorService = new AuthorService();
-
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Server.Controllers.Interfaces;
+﻿using Serilog;
+using Server.Controllers.Interfaces;
 using Server.DTOs;
 using Server.DTOs.Author;
 using Server.ObjectManagers;
@@ -14,7 +15,7 @@ namespace Server.Controllers
 
         public AuthorController()
         {
-            logger = SingletonPool.Logger.ForContext<AuthorController>();
+            logger = Log.Logger.ForContext<AuthorController>();
         }
 
 
@@ -27,19 +28,19 @@ namespace Server.Controllers
         {
             try
             {
-                var responseObj = await authorService.GetAuthorById(id);
+                var responseObj = await authorService.GetByIdAsync(id);
                 if (responseObj == null)
                 {
-                    logger.Information($"Not Found GetAuthorById with id={id}");
-                    return ResponseHelper.NotFound();
+                    logger.Error($"Author with id: {id}, not found");
+                    return ActionHelper.NotFound();
                 }
-                logger.Information($"Successful GetAuthorById with id={id}");
-                return ResponseHelper.Ok(responseObj);
+                logger.Information($"Returned author with id: {id}");
+                return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
             {
-                logger.Error($"Execption during GetAuthorById with id={id}. Exception: {ex.Message}");
-                return ResponseHelper.InternalServerError();
+                logger.Error(ex, $"Something went wrong inside GetByIdAsync action with {id}");
+                return ActionHelper.InternalServerError();
             }
         }
 
@@ -52,14 +53,14 @@ namespace Server.Controllers
         {
             try
             {
-                var responseObj = await authorService.GetAllAuthors();
-                logger.Information($"Successful GetAllAuthors");
-                return ResponseHelper.Ok(responseObj);
+                var responseObj = await authorService.GetAllAsync();
+                logger.Information($"Returned all authors from database");
+                return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
             {
-                logger.Error($"Execption during GetAllAuthors. Exception: {ex.Message}");
-                return ResponseHelper.InternalServerError();
+                logger.Error(ex, $"Something went wrong inside GetAllAsync() action");
+                return ActionHelper.InternalServerError();
             }
         }
 
@@ -72,14 +73,14 @@ namespace Server.Controllers
         {
             try
             {
-                var responseObj = await authorService.CreateAuthor(request);
-                logger.Information($"Successful CreateAuthor");
-                return ResponseHelper.Ok(responseObj);
+                var responseObj = await authorService.CreateAsync(request);
+                logger.Information($"Created Author object in DB");
+                return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Execption during CreateAuthor");
-                return ResponseHelper.InternalServerError();
+                logger.Error(ex, $"Something went wrong inside CreateAsync() action");
+                return ActionHelper.InternalServerError();
             }
         }
 
@@ -92,14 +93,18 @@ namespace Server.Controllers
         {
             try
             {
-                var responseObj = await authorService.UpdateAuthor(id, request);
-                logger.Information($"Successful UpdateAuthor");
-                return ResponseHelper.Ok(responseObj);
+                var responseObj = await authorService.UpdateAsync(id, request);
+                if (responseObj == null)
+                {
+                    return ActionHelper.NotFound();
+                }
+                logger.Information($"Updated Author object in DB with id: {id}");
+                return ActionHelper.Ok(responseObj);
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Execption during UpdateAuthor");
-                return ResponseHelper.InternalServerError();
+                logger.Error(ex, $"Something went wrong inside UpdateAsync() action");
+                return ActionHelper.InternalServerError();
             }
         }
 
@@ -112,14 +117,17 @@ namespace Server.Controllers
         {
             try
             {
-                var result = await authorService.DeleteAuthor(id);
-                logger.Information($"Successful DeleteAuthor with id={id}");
-                return ResponseHelper.Ok(result);
+                var result = await authorService.DeleteAsync(id);
+                if (result.IsDeleted)
+                {
+                    logger.Information($"Deleted author with id: {id}");
+                }
+                return ActionHelper.Ok(result);
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Execption during DeleteAuthor with id={id}.");
-                return ResponseHelper.InternalServerError();
+                logger.Error(ex, $"Something went wrong inside DeleteAsync() action");
+                return ActionHelper.InternalServerError();
             }
         }
 

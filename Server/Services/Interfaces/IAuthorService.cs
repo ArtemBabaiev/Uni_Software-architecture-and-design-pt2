@@ -5,10 +5,10 @@ namespace Server.Services.Interfaces
 {
     internal interface IAuthorService
     {
-        Task<AuthorResponse> CreateAuthor(AuthorCreateRequest request);
-        Task<AuthorResponse> GetAuthorById(long id);
-        Task<IEnumerable<AuthorResponse>> GetAllAuthors();
-        Task<DeleteRespose> DeleteAuthor(long id);
-        Task<AuthorResponse> UpdateAuthor(long id, AuthorUpdateRequest request);
+        Task<AuthorResponse> CreateAsync(AuthorCreateRequest request);
+        Task<AuthorResponse> GetByIdAsync(long id);
+        Task<IEnumerable<AuthorResponse>> GetAllAsync();
+        Task<DeleteRespose> DeleteAsync(long id);
+        Task<AuthorResponse> UpdateAsync(long id, AuthorUpdateRequest request);
     }
 }

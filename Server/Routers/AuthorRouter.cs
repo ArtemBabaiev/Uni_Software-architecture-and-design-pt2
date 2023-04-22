@@ -19,101 +19,86 @@ namespace Server.Routers
 
         public AuthorRouter()
         {
-            Logger = SingletonPool.Logger.ForContext<AuthorRouter>();
+            Logger = Log.Logger.ForContext<AuthorRouter>();
             _authorController = new AuthorController();
         }
 
         public async void RouteDelete(HttpListenerContext ctx)
         {
-            var reqData = RouterHelper.UnpackRequest(ctx.Request, RouterPath);
+            var reqData = ResponseHelper.UnpackRequest(ctx.Request, RouterPath);
 
-            using (HttpListenerResponse response = ctx.Response)
+
+            if (Regex.IsMatch(reqData.NoApiPath, ApiPath.IdRegex))
             {
-                if (Regex.IsMatch(reqData.NoApiPath, @"\/\d+"))
-                {
-                    var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                    var actionResponse = await _authorController.Delete(param);
-                    RouterHelper.PackResponse(response, actionResponse);
-                }
-                else
-                {
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    Logger.Information($"Invalid request url path: {ctx.Request.Url.PathAndQuery}");
-                }
+                var param = Convert.ToInt64(reqData.NoApiPath[1..]);
+                var actionResponse = await _authorController.Delete(param);
+                ResponseHelper.PackResponse(ctx, actionResponse);
+            }
+            else
+            {
+                ResponseHelper.PackResponse(ctx, ActionHelper.NotFound());
             }
         }
 
         public async void RouteGet(HttpListenerContext ctx)
         {
-            var reqData = RouterHelper.UnpackRequest(ctx.Request, RouterPath);
-            using (HttpListenerResponse response = ctx.Response)
+            var reqData = ResponseHelper.UnpackRequest(ctx.Request, RouterPath);
+            if (Regex.IsMatch(reqData.NoApiPath, ApiPath.IdRegex))
             {
-                if (Regex.IsMatch(reqData.NoApiPath, @"\/\d+"))
-                {
-                    var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                    var actionRespose = await _authorController.Get(param);
-                    RouterHelper.PackResponse(response, actionRespose);
-                }
-                else if (Regex.IsMatch(reqData.NoApiPath, @""))
-                {
-                    var actionRespose = await _authorController.Get();
-                    RouterHelper.PackResponse(response, actionRespose);
-                }
-                else
-                {
-                    RouterHelper.PackResponse(response, new ActionResponse(HttpStatusCode.NotFound));
-                    Logger.Information($"Invalid request url path: {ctx.Request.Url.PathAndQuery}");
-                }
+                var param = Convert.ToInt64(reqData.NoApiPath[1..]);
+                var actionRespose = await _authorController.Get(param);
+                ResponseHelper.PackResponse(ctx, actionRespose);
+            }
+            else if (Regex.IsMatch(reqData.NoApiPath, ApiPath.BlankRegex))
+            {
+                var actionRespose = await _authorController.Get();
+                ResponseHelper.PackResponse(ctx, actionRespose);
+            }
+            else
+            {
+                ResponseHelper.PackResponse(ctx, ActionHelper.NotFound());
             }
         }
 
         public async void RoutePost(HttpListenerContext ctx)
         {
-            var reqData = RouterHelper.UnpackRequest(ctx.Request, RouterPath);
+            var reqData = ResponseHelper.UnpackRequest(ctx.Request, RouterPath);
 
-            using (HttpListenerResponse response = ctx.Response)
+            if (Regex.IsMatch(reqData.NoApiPath, ApiPath.BlankRegex))
             {
-                if (Regex.IsMatch(reqData.NoApiPath, @""))
+                if (reqData.Json == null)
                 {
-                    if (reqData.Json == null)
-                    {
-                        RouterHelper.PackResponse(response, ResponseHelper.BadRequest());
-                        return;
-                    }
+                    ResponseHelper.PackResponse(ctx, ActionHelper.BadRequest());
+                    return;
+                }
 
-                    var actionResponse = await _authorController.Post(reqData.GetBodyObject<AuthorCreateRequest>());
-                    RouterHelper.PackResponse(response, actionResponse);
-                }
-                else
-                {
-                    RouterHelper.PackResponse(response, ResponseHelper.NotFound());
-                    Logger.Information($"Invalid request url path: {ctx.Request.Url.PathAndQuery}");
-                }
+                var actionResponse = await _authorController.Post(reqData.GetBodyObject<AuthorCreateRequest>());
+                ResponseHelper.PackResponse(ctx, actionResponse);
+            }
+            else
+            {
+                ResponseHelper.PackResponse(ctx, ActionHelper.NotFound());
             }
         }
 
         public async void RoutePut(HttpListenerContext ctx)
         {
-            var reqData = RouterHelper.UnpackRequest(ctx.Request, RouterPath);
-            using (HttpListenerResponse response = ctx.Response)
+            var reqData = ResponseHelper.UnpackRequest(ctx.Request, RouterPath);
+            if (Regex.IsMatch(reqData.NoApiPath, ApiPath.IdRegex))
             {
-                if (Regex.IsMatch(reqData.NoApiPath, @"\/\d+"))
+                if (reqData.Json == null)
                 {
-                    if (reqData.Json == null)
-                    {
-                        RouterHelper.PackResponse(response, ResponseHelper.BadRequest());
-                        return;
-                    }
+                    ResponseHelper.PackResponse(ctx, ActionHelper.BadRequest());
+                    return;
+                }
 
-                    var param = Convert.ToInt64(reqData.NoApiPath[1..]);
-                    var actionResponse = await _authorController.Put(param, reqData.GetBodyObject<AuthorUpdateRequest>());
-                    RouterHelper.PackResponse(response, actionResponse);
-                }
-                else
-                {
-                    RouterHelper.PackResponse(response, ResponseHelper.NotFound());
-                    Logger.Information($"Invalid request url path: {ctx.Request.Url.PathAndQuery}");
-                }
+                var param = Convert.ToInt64(reqData.NoApiPath[1..]);
+                var actionResponse = await _authorController.Put(param, reqData.GetBodyObject<AuthorUpdateRequest>());
+                ResponseHelper.PackResponse(ctx, actionResponse);
+            }
+            else
+            {
+                ResponseHelper.PackResponse(ctx, ActionHelper.NotFound());
             }
         }
 
