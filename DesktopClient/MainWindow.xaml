@@ -7,15 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.10*" />
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Button x:Name="AuthorPageButton" Content="Go to authors table" Click="OnAuthorPageButtonClick" Width="150"/>
-        </StackPanel>
+
         <Frame x:Name="MainContent" 
-               NavigationUIVisibility="Hidden" 
-               Grid.Row="1"></Frame>
+               NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

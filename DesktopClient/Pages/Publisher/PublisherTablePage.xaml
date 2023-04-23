@@ -1,19 +1,16 @@
-﻿<Page x:Class="DesktopClient.Pages.Author.AuthorTablePage"
+﻿<Page x:Class="DesktopClient.Pages.Publisher.PublisherTablePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DesktopClient.Pages.Publisher"
       xmlns:viewmodels="clr-namespace:DesktopClient.ViewModels" 
-      d:DataContext="{d:DesignInstance Type=viewmodels:AuthorTableVM}"
-      mc:Ignorable="d" 
+      d:DataContext="{d:DesignInstance Type=viewmodels:PublisherTableVM}"
       Loaded="OnLoad"
+      mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AuthorsTable">
+      Title="PublisherTablePage">
 
-    <Page.Resources>
-        
-    </Page.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -28,18 +25,18 @@
             <Button Content="Refresh" 
                     Click="OnRefreshButtonClick" 
                     Width="100"/>
-            <Button Content="Create author" 
+            <Button Content="Create publisher" 
                     Click="OnCreateButtonClick" 
                     Width="100"/>
         </StackPanel>
 
-        <DataGrid Name="authorTable" 
+        <DataGrid Name="publisherTable" 
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding AuthorList, Mode=TwoWay}"
+                  ItemsSource="{Binding PublisherList, Mode=TwoWay}"
                   Grid.Row="1"
                   CanUserAddRows="False"
                   Width="Auto">
-            
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" 
                                     Binding="{Binding Id}" 
@@ -98,7 +95,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
             </DataGrid.Columns>
         </DataGrid>
 

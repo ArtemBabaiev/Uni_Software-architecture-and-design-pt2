@@ -1,19 +1,15 @@
-﻿using DesktopClient.Dao;
-using DesktopClient.Entities;
-using System;
-using System.Collections.Generic;
+﻿using DesktopClient.Data.DAOs;
+using DesktopClient.Data.Models;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
-namespace DesktopClient.ViewModel
+namespace DesktopClient.ViewModels
 {
     internal class AuthorTableVM
     {
-        AuthorDao authorDao = new();
+        private static AuthorDao authorDao = new();
 
         private ObservableCollection<Author> _authorList;
         public ObservableCollection<Author> AuthorList { get => _authorList; set => _authorList = value; }
@@ -25,7 +21,7 @@ namespace DesktopClient.ViewModel
 
         public async Task GetAuthors()
         {
-            AuthorList.Clear();
+            ClearList();
             var authors = await authorDao.GetAllAuthors();
             foreach (var item in authors)
             {
@@ -41,7 +37,7 @@ namespace DesktopClient.ViewModel
 
         public async Task UpdateAuthor(long id)
         {
-            var toUpdate = AuthorList.First(auth =>  auth.Id == id);
+            var toUpdate = AuthorList.First(auth => auth.Id == id);
             if (toUpdate == null)
             {
                 return;
@@ -50,6 +46,11 @@ namespace DesktopClient.ViewModel
             var insertionIndex = AuthorList.IndexOf(toUpdate);
             AuthorList.Remove(toUpdate);
             AuthorList.Insert(insertionIndex, updated);
+        }
+
+        public void ClearList()
+        {
+            AuthorList.Clear();
         }
     }
 }

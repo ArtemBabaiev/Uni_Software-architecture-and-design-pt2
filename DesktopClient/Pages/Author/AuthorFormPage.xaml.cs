@@ -1,19 +1,8 @@
-﻿using DesktopClient.Exceptions;
-using DesktopClient.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DesktopClient.Utils;
+using DesktopClient.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DesktopClient.Pages.Author
 {
@@ -25,19 +14,21 @@ namespace DesktopClient.Pages.Author
         AuthorFormVM viewModel;
         public AuthorFormPage()
         {
-            viewModel = new();
-            InitializeComponent();
+            viewModel = ViewModelFactory.GetViewModel<AuthorFormVM>();
             DataContext = viewModel;
+            InitializeComponent();
         }
 
 
-        private async void OnSaveClick(object sender, RoutedEventArgs e)
+        private async void OnSaveButtonClick(object sender, RoutedEventArgs e)
         {
-
             await viewModel.SaveAuthor();
             NavigationService.GoBack();
+        }
 
-
+        private void OnCancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }
