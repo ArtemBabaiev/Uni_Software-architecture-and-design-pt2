@@ -16,7 +16,9 @@ namespace Server.Utils
                 response.StatusCode = (int)action.StatusCode;
                 if (action.ResponseObj != null)
                 {
-                    var buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(action.ResponseObj));
+                    var json = JsonSerializer.Serialize(action.ResponseObj);
+
+                    var buffer = Encoding.UTF8.GetBytes(Crypt.Ecnrypt(json));
                     response.OutputStream.Write(buffer, 0, buffer.Length);
                 }
 
@@ -39,7 +41,8 @@ namespace Server.Utils
             string json;
             using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
             {
-                json = reader.ReadToEnd();
+                var encrypted = reader.ReadToEnd();
+                json = Crypt.Decrypt(encrypted);
             }
             requestData.Json = json;
             return requestData;

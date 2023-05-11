@@ -48,6 +48,18 @@
                                     Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Width="200"/>
 
+                <DataGridTextColumn Header="ISBN" 
+                                    Binding="{Binding Isbn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"/>
+                <DataGridTextColumn Header="NumberOfPages" 
+                                    Binding="{Binding NumberOfPages, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"/>
+
+                <DataGridTextColumn Header="PublishingYear" 
+                                    Binding="{Binding PublishingYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"/>
+
+
                 <DataGridTextColumn Header="Description" 
                                     Binding="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Width="300" >
@@ -58,6 +70,28 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
+                <DataGridTextColumn Header="AuthorId" 
+                                    Binding="{Binding AuthorId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"/>
+                <DataGridTextColumn Header="AuthorName" 
+                                    Binding="{Binding AuthorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="PublisherId" 
+                                    Binding="{Binding PublisherId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"/>
+                <DataGridTextColumn Header="PublisherName" 
+                                    Binding="{Binding PublisherName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="GenreId" 
+                                    Binding="{Binding GenreId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"/>
+                <DataGridTextColumn Header="GenreName" 
+                                    Binding="{Binding GenreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="200"
+                                    IsReadOnly="True"/>
+                
                 <DataGridTextColumn Header="Created" 
                                     Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
                                     IsReadOnly="True"

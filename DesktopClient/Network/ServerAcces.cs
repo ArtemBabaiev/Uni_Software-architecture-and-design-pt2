@@ -1,5 +1,6 @@
 ﻿using DesktopClient.Data.Models;
 using DesktopClient.Exceptions;
+using DesktopClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -74,7 +75,8 @@ namespace DesktopClient.Network
             {
                 case System.Net.HttpStatusCode.OK:
                     string responseBody = response.Content.ReadAsStringAsync().Result;
-                    return JsonSerializer.Deserialize<T>(responseBody);
+                    var json = Crypt.Decrypt(responseBody);
+                    return JsonSerializer.Deserialize<T>(json);
                 default:
                     throw new HttpResponseException();
             }
@@ -83,7 +85,8 @@ namespace DesktopClient.Network
         private HttpContent PackBody(object bodyObj)
         {
             var json = JsonSerializer.Serialize(bodyObj);
-            return new StringContent(json, Encoding.UTF8, "application/json");
+            var encrypted = Crypt.Ecnrypt(json);
+            return new StringContent(encrypted, Encoding.UTF8, "application/json");
         }
     }
 }

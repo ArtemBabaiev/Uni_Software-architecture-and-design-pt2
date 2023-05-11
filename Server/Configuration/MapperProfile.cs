@@ -39,7 +39,7 @@ namespace Server.Configuration
                 response => response.PublisherName,
                 conf => conf.MapFrom(model => model.Publisher.Name));
             CreateMap<CreateBookRequest, Book>();
-            CreateMap<UpdateBookRequest, Author>();
+            CreateMap<UpdateBookRequest, Book>();
         }
 
         public void CreateExemplarMap()
